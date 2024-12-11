@@ -1,0 +1,41 @@
+<h1>List of users</h1>
+
+<table border="1">
+  <tr>
+    <th>
+      Username
+    </th>
+
+    <th>
+      Private?
+    </th>
+
+    <th></th>
+    <th></th>
+  </tr>
+
+      <% @list_of_users.each do |a_thing| %>
+        <tr>
+          <td><%= a_thing.username %></td>
+          <td><% if a_thing.private == false %>
+          No
+          <% else %>
+          Yes
+          <% end %>  
+          </td>
+          <td><% if @current_user == nil %>
+          
+          <% else %>
+          <form action="follow">
+            <label for="follow_request"></label>
+            <button>Follow</button>
+          </form>
+          <% end %>
+          </td>
+          <td>
+            <a href="/users/<%= a_thing.username %>">Show Details</a>
+          </td>
+        </tr>
+      <% end %>
+
+  </table>

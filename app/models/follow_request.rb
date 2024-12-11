@@ -15,15 +15,7 @@
 #  fk_rails_...  (sender_id => users.id)
 #
 class FollowRequest < ApplicationRecord
-  belongs_to :sender, class_name: 'User'
-  belongs_to :recipient, class_name: 'User'
-
-  # Automatically set status
-  before_create :set_status_based_on_privacy
-
-  private
-
-  def set_status_based_on_privacy
-    self.status = recipient.private ? 'pending' : 'accepted'
-  end
+  belongs_to :recipient, class_name: "User", foreign_key: "recipient_id", required: true
+  belongs_to :sender, class_name: "User", foreign_key: "sender_id", required: true
 end
+
