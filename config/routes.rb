@@ -34,7 +34,7 @@ Rails.application.routes.draw do
 
   get("/users/sign_up", { :controller => "user_authentication", :action => "sign_up_form" })        
   post("/insert_user", { :controller => "user_authentication", :action => "create"  })      
-  get("/users/edit", { :controller => "user_authentication", :action => "edit_profile_form" })       
+  get("/edit_user_profile", { :controller => "user_authentication", :action => "edit_profile_form" })       
   post("/modify_user", { :controller => "user_authentication", :action => "update" })
   get("/cancel_user_account", { :controller => "user_authentication", :action => "destroy" })
   get("/users/sign_in", { :controller => "user_authentication", :action => "sign_in_form" })
