@@ -1,0 +1,104 @@
+<h1><%= @the_user.username %>'s Profile</h1>
+
+<div class="profile-info">
+  <p> Private: <%= @the_user.private %></p>
+  <p> Following: 
+    <% accepted_count = FollowRequest.where(sender_id: @the_user.id).select { |follow| follow.status == "accepted" }.count %>
+     <%= accepted_count %>
+  <p> Followers:
+    <% follower_count = FollowRequest.where(recipient_id: @the_user.id).select { |follow| follow.status == "accepted" }.count %>
+      <%= follower_count %>
+  <p>Email: <%= @the_user.email %></p>
+  <p>Total Photos: <%= @the_user.photos.count %></p>
+  <p>Total Likes: <%= @the_user.likes.count %></p>
+  <p>Total Comments: <%= @the_user.comments.count %></p>
+</div>
+
+<ul>
+    <li>
+      <a href="/users/:username">Profile</a>
+    </li>
+    <li>
+      <a href="/users/:username/liked_photos">Liked photos</a>
+    </li>
+    <li>
+      <a href="/users/:username/feed">Feed</a>
+    </li>
+    <li>
+      <a href="/users/:username/discover">Discover</a>
+    </li>
+  </ul>
+  Requests
+  <ul>
+    <% FollowRequest.where({ :sender_id => current_user.id}).each do |follow| %>
+      <% if follow.status =="pending" %>
+          <% recipient_user = User.where({ :id => follow.recipient_id }).at(0) %>
+        <li>
+        <%= recipient_user.username %> 
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+
+<h2> Own Photos (<%= current_user.photos.count%>) </h2>
+<div class="photos">
+<hr>
+<div>
+  <div>
+    <table border="1">
+      <tr>
+        <th>
+          Image
+        </th>
+
+        <th>
+          Caption
+        </th>
+
+        <th>
+          Owner
+        </th>
+
+        <th>
+          Posted
+        </th>
+
+        <th>
+          Likes
+        </th>
+
+        <th>
+        </th>
+      </tr>
+      <% current_user.photos.each do |a_photo| %>
+      <tr>
+        <td>
+           <img src="<%= a_photo.image %>" alt="Description of Image" />
+          <%= a_photo.image %>
+        </td>
+
+        <td>
+          <%= a_photo.caption %>
+        </td>
+
+        <td>
+          <%= a_photo.owner.username %> 
+        </td>
+
+        <td>
+          <%= time_ago_in_words(a_photo.created_at) %> ago
+        </td>
+
+        <td>
+          <%= a_photo.likes_count %> 
+        </td>
+
+        <td>
+          <a href="/photos/<%= a_photo.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+
+</div>

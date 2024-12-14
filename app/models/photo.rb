@@ -21,6 +21,8 @@ class Photo < ApplicationRecord
   has_many :comments, class_name: "Comment"
   has_many :likes, dependent: :destroy, foreign_key: "photo_id", dependent: :destroy
 
+  has_many(:fans, through: :likes, source: :fan)
+
   validates :image, presence: true
 
   mount_uploader :image, ImageUploader

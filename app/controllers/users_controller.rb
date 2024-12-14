@@ -1,6 +1,4 @@
 class UsersController < ApplicationController
-  skip_before_action(:authenticate_user!, { :only => [:index] })
-
   def index
     matching_users = User.all
 
@@ -56,4 +54,16 @@ class UsersController < ApplicationController
 
     redirect_to("/users", { :notice => "User deleted successfully."} )
   end
+
+  def profile 
+    the_user = params.fetch("username")
+    matching_users = User.where({ :username => the_user })
+    @the_user = matching_users.at(0)
+
+    #followers_count = FollowRequest.where(recipient_id: the_user.id).count
+    #following_count = FollowRequest.where(sender_id: the_user.id).count
+    
+    render({ :template => "users/profile" })
+  end
+
 end

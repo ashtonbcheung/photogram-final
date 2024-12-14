@@ -7,6 +7,9 @@
 </div>
 
 <hr>
+
+
+<hr>
 <div>
   <div>
     <table border="1">
@@ -18,6 +21,11 @@
         <th>
           Private?
         </th>
+        <% if current_user.present? %>
+          <th>
+          Follow/Unfollow
+          <th>
+        <%end%>
 
 
         <th>
@@ -34,6 +42,28 @@
           <%= a_user.private ? 'Yes' : 'No' %>
         </td>
 
+        <% if current_user.present? %>
+          <td>
+          <% follow_request = FollowRequest.where({ :sender_id => current_user.id, :recipient_id => a_user.id }).at(0) %>
+              <% if follow_request && follow_request.status =="accepted" %>
+                <a href="/delete_follow_request/<%= follow_request.id %>">
+                  Unfollow
+                </a>
+              <% elsif follow_request && follow_request.status =="pending" %>
+                Request Sent
+                <a href="/delete_follow_request/<%= follow_request.id %>">
+                  Cancel
+                </a>
+              <% else %>
+                <form action="/insert_follow_request" method="post">
+                  <input type="hidden" name="query_sender_id" value="<%= a_user.id %>">
+                  <input type="hidden" name="query_recipient" value="<%= current_user.id %>">
+                  <button type="submit"> Follow </button>
+                </form>
+              <% end %>
+          <td>
+        <%end%>
+      
         <td>
           <a href="/users/<%= a_user.id %>">
             Show details
@@ -45,5 +75,4 @@
     </table>
   </div>
 </div>
-
-<hr>
+</hr>
